@@ -7,7 +7,7 @@ class Allocator
 {
 public:
 
-	Allocator(size_t size, void* start) : start(start), allocSize(size), offset(0), num_allocations(0) {}
+	Allocator(size_t size, void* start);
 	virtual ~Allocator()
 	{
 		assert(num_allocations == 0 && offset == 0);
@@ -18,14 +18,8 @@ public:
 	virtual void Deallocate(void* ptr) = 0;
 
 protected:
-
-	uint8_t alignForwardAdjustment(size_t address, uint8_t alignment)
-	{
-		const size_t multiplier = (address / alignment) + 1;
-		const size_t alignedAddress = multiplier * alignment;
-		const size_t padding = alignedAddress - address;
-		return padding;
-	}
+	size_t GetAlignmentPadding(size_t adress, uint8_t alignment);
+	void* GetNextAlignedAdress(void* adress, uint8_t alignment);
 	
 	void* start;
 	size_t allocSize;
