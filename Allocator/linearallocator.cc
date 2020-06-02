@@ -3,7 +3,7 @@
 void* LinearAllocator::Allocate(size_t size, uint8_t alignment)
 {
 	size_t padding = 0;
-	size_t currentAddress = (size_t)start + offset;
+	const size_t currentAddress = (size_t)start + offset;
 
 	void* returnAddr = nullptr;
 	//Check if aligning is needed

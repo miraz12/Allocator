@@ -10,13 +10,26 @@ Allocator::Allocator(size_t size) : allocSize(size), offset(0), num_allocations(
 size_t Allocator::GetAlignmentPadding(size_t address, uint8_t alignment)
 {
 	const uint8_t padding = alignment - (address & static_cast<size_t>(alignment - 1));
-
 	if (padding == alignment) return 0;
-
 	return padding;
 }
 
-void* Allocator::GetNextAlignedAdress(void* address, uint8_t alignment)
+size_t Allocator::GetAlignmentPaddingHeader(size_t address, uint8_t alignment, uint8_t headerSize)
+{
+	uint8_t padding = GetAlignmentPadding(address, alignment);
+	uint8_t neededSpace = headerSize;
+
+	if (padding < neededSpace)
+	{
+		neededSpace -= padding;
+		padding += padding * (neededSpace / alignment);
+		if (neededSpace % alignment > 0) padding += padding;
+	}
+	
+	return padding;
+}
+
+void* Allocator::GetNextAlignedAddress(void* address, uint8_t alignment)
 {
 	//Beast. Mask off the log2(n) least significant bits
 	return  reinterpret_cast<void*>((reinterpret_cast<size_t>(address) + 

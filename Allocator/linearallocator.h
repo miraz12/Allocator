@@ -12,4 +12,4 @@ public:
 	
 };
 
-#endif //_ALLOCATOR_H_
+#endif //_LINEAR_ALLOCATOR_H_

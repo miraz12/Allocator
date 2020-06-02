@@ -20,8 +20,9 @@ public:
 	virtual void Deallocate() = 0;
 
 protected:
-	size_t GetAlignmentPadding(size_t adress, uint8_t alignment);
-	void* GetNextAlignedAdress(void* adress, uint8_t alignment);
+	size_t GetAlignmentPadding(size_t address, uint8_t alignment);
+	size_t GetAlignmentPaddingHeader(size_t address, uint8_t alignment, uint8_t headerSize);
+	void* GetNextAlignedAddress(void* address, uint8_t alignment);
 	
 	void* start;
 	size_t allocSize;
