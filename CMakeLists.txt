@@ -1,8 +1,9 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.9)
+cmake_minimum_required(VERSION 3.10)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-PROJECT(AllocatorTest)
+project(AllocatorTest)
 
-add_library(Alloc STATIC Allocator/allocator.cc  Allocator/allocator.h  Allocator/linearallocator.cc Allocator/linearallocator.h)
-
-ADD_EXECUTABLE(AllocatorTest main.cc)
-target_link_libraries(AllocatorTest PUBLIC Alloc)
+add_subdirectory(Allocator)
+add_executable(AllocatorTest main.cc)
+target_link_libraries(AllocatorTest PUBLIC Allocator)

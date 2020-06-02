@@ -6,13 +6,9 @@ class LinearAllocator : public Allocator
 {
 public:
 
-	LinearAllocator(size_t size, void* start) : Allocator(size, start) {};
-	virtual void* Allocate(size_t size, uint8_t alignment = 4) override;
-	virtual void Deallocate(void* ptr) override;
-
-protected:
-	
-
+	LinearAllocator(size_t size) : Allocator(size) {};
+	void* Allocate(size_t size, uint8_t alignment = 4) override;
+	void Deallocate() override;
 	
 };
 
