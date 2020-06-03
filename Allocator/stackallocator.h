@@ -6,26 +6,20 @@ class StackAllocator : public Allocator
 {
 public:
 
-	StackAllocator(size_t size) : Allocator(size), prevAdress(nullptr), currentAdress(nullptr) {};
+	StackAllocator(size_t size) : Allocator(size), currentAddress(nullptr) 
+	{
+
+	};
 	void* Allocate(size_t size, uint8_t alignment = 4) override;
-	void Deallocate() override;
+	void Deallocate(void* ptr) override;
 
 private:
 	struct header
 	{
-#if _DEBUG 
-		void* prevAdress;
-#endif 
-
 		size_t padding;
 	};
 
-#if _DEBUG 
-	void* prevAdress;
-#endif 
-
-	void* currentAdress;
-	
+	void* currentAddress;
 };
 
 #endif //_STACK_ALLOCATOR_H_

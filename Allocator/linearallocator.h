@@ -8,7 +8,7 @@ public:
 
 	LinearAllocator(size_t size) : Allocator(size) {};
 	void* Allocate(size_t size, uint8_t alignment = 4) override;
-	void Deallocate() override;
+	void Deallocate(void* ptr) override;
 	
 };
 

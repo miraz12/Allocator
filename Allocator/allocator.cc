@@ -1,10 +1,12 @@
 #include "allocator.h"
-#include <stdlib.h>
+#include <windows.h>
 
 
 Allocator::Allocator(size_t size) : allocSize(size), offset(0), num_allocations(0)
 {
-	start = malloc(allocSize);
+	//start = malloc(allocSize);
+	start = VirtualAlloc((void *)(2ull*1024ull*1024ull*1024ull*1024ull), size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+
 }
 
 size_t Allocator::GetAlignmentPadding(size_t address, uint8_t alignment)
@@ -16,14 +18,14 @@ size_t Allocator::GetAlignmentPadding(size_t address, uint8_t alignment)
 
 size_t Allocator::GetAlignmentPaddingHeader(size_t address, uint8_t alignment, uint8_t headerSize)
 {
-	uint8_t padding = GetAlignmentPadding(address, alignment);
-	uint8_t neededSpace = headerSize;
+	size_t padding = GetAlignmentPadding(address, alignment);
+	size_t neededSpace = headerSize;
 
 	if (padding < neededSpace)
 	{
-		neededSpace -= padding;
-		padding += padding * (neededSpace / alignment);
-		if (neededSpace % alignment > 0) padding += padding;
+		neededSpace -= padding; //Use padding space as header space
+		padding += alignment * (neededSpace / alignment); //How many extra padding steps are needed
+		if (neededSpace % alignment > 0) padding += alignment; //Make sure adress after header is aligned
 	}
 	
 	return padding;

@@ -14,13 +14,13 @@ void* LinearAllocator::Allocate(size_t size, uint8_t alignment)
 
 
 	returnAddr = (void*)(currentAddress + padding);
-	offset += size;
+	offset += size + padding;
 	num_allocations++;
 	
 	return returnAddr;
 }
 
-void LinearAllocator::Deallocate()
+void LinearAllocator::Deallocate(void* ptr)
 {
 	this->offset = 0;
 	this->num_allocations = 0;
