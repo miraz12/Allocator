@@ -6,7 +6,7 @@ class StackAllocator : public Allocator
 {
 public:
 
-	StackAllocator(size_t size) : Allocator(size), currentAddress(nullptr) 
+	StackAllocator(size_t size) : Allocator(size)
 	{
 
 	};
@@ -19,7 +19,6 @@ private:
 		size_t padding;
 	};
 
-	void* currentAddress;
 };
 
 #endif //_STACK_ALLOCATOR_H_

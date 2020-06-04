@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <assert.h>
 #include <cstdlib>
+#include <windows.h>
 
 class Allocator
 {
@@ -12,8 +13,9 @@ public:
 	virtual ~Allocator()
 	{
 		assert(num_allocations == 0 && offset == 0);
-		start = nullptr; allocSize = 0;
-		VirtualFree((void*)start);
+		start = 0;
+		allocSize = 0;
+		VirtualFree((void*)start, allocSize, MEM_RELEASE);
 	}
 	
 	virtual void* Allocate(size_t size, uint8_t alignment = 4) = 0;

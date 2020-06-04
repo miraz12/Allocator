@@ -2,25 +2,26 @@
 
 void* StackAllocator::Allocate(size_t size, uint8_t alignment)
 {
-	currentAddress = (void*)((size_t)start + offset);
-	size_t padding = GetAlignmentPaddingHeader((size_t)currentAddress, alignment, sizeof(header));
+	size_t currentAddress = (start + offset);
+	size_t padding = GetAlignmentPaddingHeader(currentAddress, alignment, sizeof(header));
 
 	if (padding + offset + size > allocSize)
 		return nullptr;
 
-	void* returnAddress = reinterpret_cast<void*>(reinterpret_cast<size_t>(currentAddress) + padding);
-	header* head = reinterpret_cast<header*>(reinterpret_cast<size_t>(returnAddress) - sizeof(header));
+	size_t returnAddress = currentAddress + padding;
+	header* head = reinterpret_cast<header*>(returnAddress - sizeof(header));
 	head->padding = padding;
 
 
 	offset += size + padding;
 	num_allocations++;
-	return  returnAddress;
+	return  reinterpret_cast<void*>(returnAddress);
 }
 
 void StackAllocator::Deallocate(void* ptr)
 {
-	header* head = reinterpret_cast<header*>(reinterpret_cast<size_t>(ptr) - sizeof(header));
-	offset = (size_t)ptr - head->padding - (size_t)start;
+	size_t ptrVal = reinterpret_cast<size_t>(ptr);
+	header* head = reinterpret_cast<header*>(ptrVal - sizeof(header));
+	offset = ptrVal - head->padding - start;
 	num_allocations--;
 }

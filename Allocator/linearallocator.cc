@@ -2,26 +2,24 @@
 
 void* LinearAllocator::Allocate(size_t size, uint8_t alignment)
 {
-	size_t padding = 0;
-	const size_t currentAddress = (size_t)start + offset;
+	const size_t currentAddress = start + offset;
 
-	void* returnAddr = nullptr;
 	//Check if aligning is needed
-	padding = GetAlignmentPadding(currentAddress, alignment);
+	size_t padding = GetAlignmentPadding(currentAddress, alignment);
 
 	if (padding + offset + size > allocSize)
 		return nullptr;
 
-
-	returnAddr = (void*)(currentAddress + padding);
+	size_t returnAddr = currentAddress + padding;
 	offset += size + padding;
 	num_allocations++;
 	
-	return returnAddr;
+	return reinterpret_cast<void*>(returnAddr);
 }
 
 void LinearAllocator::Deallocate(void* ptr)
 {
-	this->offset = 0;
-	this->num_allocations = 0;
+	offset = 0;
+	num_allocations = 0;
 }
+ 

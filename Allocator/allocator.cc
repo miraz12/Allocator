@@ -1,11 +1,12 @@
 #include "allocator.h"
-#include <windows.h>
 
+constexpr unsigned long long MEMORY_POSITION = 2ull * 1024ull * 1024ull * 1024ull * 1024ull;
 
 Allocator::Allocator(size_t size) : allocSize(size), offset(0), num_allocations(0)
 {
-	//start = malloc(allocSize);
-	start = VirtualAlloc((void *)(2ull*1024ull*1024ull*1024ull*1024ull), size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+	start = reinterpret_cast<size_t>(VirtualAlloc(reinterpret_cast<void*>(MEMORY_POSITION),
+									 size, MEM_COMMIT | MEM_RESERVE,
+									 PAGE_READWRITE));
 
 }
 
