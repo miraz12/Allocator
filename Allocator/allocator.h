@@ -13,9 +13,9 @@ public:
 	virtual ~Allocator()
 	{
 		assert(num_allocations == 0 && offset == 0);
+		VirtualFree((void*)start, allocSize, MEM_RELEASE);
 		start = 0;
 		allocSize = 0;
-		VirtualFree((void*)start, allocSize, MEM_RELEASE);
 	}
 	
 	virtual void* Allocate(size_t size, uint8_t alignment = 4) = 0;
@@ -24,7 +24,7 @@ public:
 protected:
 	size_t GetAlignmentPadding(size_t address, uint8_t alignment);
 	size_t GetAlignmentPaddingHeader(size_t address, uint8_t alignment, uint8_t headerSize);
-	void* GetNextAlignedAddress(void* address, uint8_t alignment);
+	size_t GetNextAlignedAddress(size_t address, uint8_t alignment);
 	
 	size_t start;
 	size_t allocSize;

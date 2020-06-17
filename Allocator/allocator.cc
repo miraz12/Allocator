@@ -32,9 +32,8 @@ size_t Allocator::GetAlignmentPaddingHeader(size_t address, uint8_t alignment, u
 	return padding;
 }
 
-void* Allocator::GetNextAlignedAddress(void* address, uint8_t alignment)
+size_t Allocator::GetNextAlignedAddress(size_t address, uint8_t alignment)
 {
 	//Beast. Mask off the log2(n) least significant bits
-	return  reinterpret_cast<void*>((reinterpret_cast<size_t>(address) + 
-		static_cast<uint8_t>(alignment - 1)) & static_cast<uint8_t>(~(alignment - 1)));
+	return static_cast<size_t>((static_cast<uint8_t>(address) + static_cast<uint8_t>(alignment - 1)) & static_cast<uint8_t>(~(alignment - 1)));
 }
