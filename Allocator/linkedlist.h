@@ -54,7 +54,7 @@ void LinkedList<T>::Remove(Node* dNode, Node* pNode)
 {
 	if (pNode == nullptr) 
 	{
-		if (dNode->next == nullptr) 
+		if (dNode->next == nullptr)
 		{
 			head = nullptr;
 		}
