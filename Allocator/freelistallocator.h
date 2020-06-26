@@ -27,7 +27,11 @@ public:
 	void* Allocate(size_t size, uint8_t alignment) override;
 	void Deallocate(void* ptr) override;
 
+private:
+	//Find first
 	void Find(size_t size, uint8_t alignment, size_t& padding, Node*& pNode, Node*& fNode);
+
+	void Coalescence(Node* fNode, Node* pNode);
 };
 
 #endif //_FREE_LIST_ALLOCATOR_H_
