@@ -18,8 +18,7 @@ void* FreeListAllocator::Allocate(size_t size, uint8_t alignment)
 	Node* newNode;
 	Node* previousNode;
 	this->Find(size, alignment, padding, previousNode, newNode);
-
-
+	
 	const size_t alignmentPadding = padding - allocationHeaderSize;
 	const size_t requiredSize = size + padding;
 	const size_t rest = newNode->data.blockSize - requiredSize;
@@ -39,8 +38,7 @@ void* FreeListAllocator::Allocate(size_t size, uint8_t alignment)
 	reinterpret_cast<AllocationHeader*>(headerAddress)->blockSize = requiredSize;
 	reinterpret_cast<AllocationHeader*>(headerAddress)->padding = alignmentPadding;
 
-	//m_used += requiredSize;
-	//m_peak = std::max(m_peak, m_used);
+	num_allocations++;
 
 	return reinterpret_cast<void*>(dataAddress);
 }
@@ -60,7 +58,7 @@ void FreeListAllocator::Deallocate(void* ptr)
 	Node* itPrev = nullptr;
 	while (it != nullptr)
 	{
-		if (ptr < it) //Sort linked list
+		if (ptr < it) //Sort linked list by address
 		{
 			freeList.Insert(freeNode, itPrev);
 			break;
@@ -69,6 +67,7 @@ void FreeListAllocator::Deallocate(void* ptr)
 		it = it->next;
 	}
 
+	num_allocations--;
 	Coalescence(freeNode, itPrev);
 }
 

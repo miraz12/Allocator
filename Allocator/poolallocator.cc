@@ -17,10 +17,12 @@ void* PoolAllocator::Allocate(size_t size, uint8_t alignment)
 	Node* newNode = blockList.Pop();
 	assert(newNode != nullptr);
 
-	return (void*)newNode;
+	num_allocations++;
+	return static_cast<void*>(newNode);
 }
 
 void PoolAllocator::Deallocate(void* ptr)
 {
 	blockList.Push(static_cast<Node*>(ptr));
+	num_allocations--;
 }

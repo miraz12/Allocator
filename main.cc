@@ -40,5 +40,9 @@ int main()
 		memset(ptr3, 3, 10 * sizeof(int));
 	}
 
+	alloc.Deallocate(ptr);
+	alloc.Deallocate(ptr3);
+
+
 	return 0;
 }
