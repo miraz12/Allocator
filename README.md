@@ -1,2 +1,2 @@
 # Allocator
-Implementaion of differen memory allocators
+Implementaion of different memory allocators
