@@ -6,8 +6,8 @@ template<class T> class LinkedList
 public:
 	struct Node
 	{
-		Node* next;
 		T data;
+		Node* next;
 	};
 
 	Node* head{ nullptr };

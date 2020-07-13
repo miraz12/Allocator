@@ -8,41 +8,22 @@ constexpr int ALIGNMENT = 8;
 
 int main()
 {
-	FreeListAllocator alloc(ALLOCSIZE * sizeof(int));
+	FreeListAllocator alloc(ALLOCSIZE * (sizeof(int) + 2));
 	//StackAllocator alloc(ALLOCSIZE * sizeof(int));
 
-	/*for (int i = 0; i < 10; ++i)
+	const int numAllocs = 100;
+	int* ptrArray[numAllocs];
+	for (int i = 0; i < numAllocs; ++i)
 	{
-		int* ptr = static_cast<int*>(alloc.Allocate(10 * sizeof(int), ALIGNMENT));
-		if (ptr)
+		ptrArray[i] = static_cast<int*>(alloc.Allocate(1 * sizeof(int), ALIGNMENT));
+		if (ptrArray[i])
 		{
-			memset(ptr, i+1, 10 * sizeof(int));
+			memset(ptrArray[i], i+1, 1 * sizeof(int));
 		}
- 	}*/
-
-	int* ptr = static_cast<int*>(alloc.Allocate(10 * sizeof(int), ALIGNMENT));
-	if (ptr)
+ 	}
+	for (int i = 0; i < numAllocs; ++i)
 	{
-		memset(ptr, 1, 10 * sizeof(int));
+		alloc.Deallocate(ptrArray[i]);
 	}
-
-	int* ptr2 = static_cast<int*>(alloc.Allocate(10 * sizeof(int), ALIGNMENT));
-	if (ptr2)
-	{
-		memset(ptr2, 2, 10 * sizeof(int));
-	}
-
-	alloc.Deallocate(ptr2);
-
-	int* ptr3 = static_cast<int*>(alloc.Allocate(10 * sizeof(int), ALIGNMENT));
-	if (ptr3)
-	{
-		memset(ptr3, 3, 10 * sizeof(int));
-	}
-
-	alloc.Deallocate(ptr);
-	alloc.Deallocate(ptr3);
-
-
 	return 0;
 }

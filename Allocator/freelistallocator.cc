@@ -89,19 +89,18 @@ void FreeListAllocator::Find(size_t size, uint8_t alignment, size_t& padding, No
 	}
 	pNode = itPrev;
 	fNode = it;
+	assert(fNode != nullptr && "No block big enough found!");
 }
 
 void FreeListAllocator::Coalescence(Node* fNode, Node* pNode)
 {
-	if (fNode->next != nullptr &&
-		reinterpret_cast<size_t>(fNode) + fNode->data.blockSize == reinterpret_cast<size_t>(fNode->next)) 
+	if (fNode->next != nullptr && reinterpret_cast<size_t>(fNode) + fNode->data.blockSize == reinterpret_cast<size_t>(fNode->next)) 
 	{
 		fNode->data.blockSize += fNode->next->data.blockSize;
 		freeList.Remove(fNode->next, fNode);
 	}
 
-	if (pNode != nullptr &&
-		reinterpret_cast<size_t>(pNode) + pNode->data.blockSize == reinterpret_cast<size_t>(fNode)) 
+	if (pNode != nullptr &&	reinterpret_cast<size_t>(pNode) + pNode->data.blockSize == reinterpret_cast<size_t>(fNode)) 
 	{
 		pNode->data.blockSize += fNode->data.blockSize;
 		freeList.Remove(fNode, pNode);
